@@ -1,0 +1,12 @@
+FROM alpine:latest
+LABEL maintainer="Widal"
+RUN apk add --update --no-cache openssh sudo 
+RUN echo 'PasswordAuthentication yes' >> /etc/ssh/sshd_config
+RUN adduser -h /home/hunter -s /bin/sh -D hunter
+RUN echo -n 'hunter:DzX237EYCo49PSFE7T' | chpasswd
+RUN addgroup sudo && addgroup hunter sudo
+RUN echo '%sudo	ALL=(ALL:ALL) ALL' >> /etc/sudoers
+RUN echo -e "Welcome to EDS (Explore the Deep System) Challenge!\n\nHave fun!\n" > /etc/motd
+ENTRYPOINT ["/entrypoint.sh"]
+EXPOSE 22
+COPY entrypoint.sh /
